@@ -1,0 +1,8 @@
+main: com.kzics.quirksmha.Main
+version: 1.0
+name: QuirksMHA
+commands:
+  stats:
+    description: Shows your stats
+    usage: /stats
+    aliases: [s]
