@@ -1,10 +1,12 @@
 package com.kzics.quirksmha.abilities;
 
 import com.kzics.quirksmha.Main;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -14,13 +16,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class SixEyesAbility implements QuirkAbility {
+public class SixEyesAbility extends QuirkAbility {
 
-    private double maxTime; // Temps maximal d'utilisation
-    private double cooldownReduction; // Réduction de cooldown
-    private double sideEffectDuration; // Durée de l'effet secondaire
-    private boolean isActive = false; // Indique si l'ability est active
-    private final Set<UUID> glowingPlayers = new HashSet<>(); // Liste des joueurs affectés par le glow effect
+    private double maxTime;
+    private double cooldownReduction;
+    private double sideEffectDuration;
+    private boolean isActive = false;
+    private final Set<UUID> glowingPlayers = new HashSet<>();
     private final QuirkManager quirkManager;
 
     public SixEyesAbility(QuirkManager quirkManager) {
@@ -69,7 +71,6 @@ public class SixEyesAbility implements QuirkAbility {
         player.sendMessage("§cSix Eyes désactivé !");
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_DEATH, 1.0f, 1.0f);
 
-        // Appliquer les effets secondaires
         new BukkitRunnable() {
             int elapsedTicks = 0;
 
@@ -81,7 +82,6 @@ public class SixEyesAbility implements QuirkAbility {
                     return;
                 }
 
-                // Effets secondaires visuels et auditifs
                 player.getWorld().spawnParticle(Particle.DUST, player.getLocation(), 10,
                         new Particle.DustOptions(Color.RED, 1.0f));
                 player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_HURT, 0.5f, 0.8f);
@@ -99,18 +99,15 @@ public class SixEyesAbility implements QuirkAbility {
     }
 
     private void applyEffects(Player player) {
-        // Immunité à la faim
         player.setFoodLevel(20);
         player.setSaturation(10.0f);
 
-        // Effets visuels
         player.getWorld().playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.5f);
         player.getWorld().spawnParticle(Particle.DUST, player.getLocation(), 30,
                 new Particle.DustOptions(Color.AQUA, 1.5f));
     }
 
     private void removeEffects(Player player) {
-        // Réinitialiser les effets d'immunité à la faim
         player.setFoodLevel(20);
         player.setSaturation(5.0f);
     }
@@ -134,17 +131,14 @@ public class SixEyesAbility implements QuirkAbility {
         glowingPlayers.clear();
     }
 
-    @EventHandler
-    public void onRightClickPlayer(PlayerInteractEntityEvent event) {
-        if (!(event.getRightClicked() instanceof Player target)) return;
-
+    @Override
+    public void onInteract(PlayerInteractEntityEvent event) {
+        if (!(event.getRightClicked() instanceof LivingEntity target)) return;
         Player player = event.getPlayer();
         if (!isActive) return;
-
-        // Apprendre le Quirk du joueur
-        if (quirkManager.hasQuirk(target)) {
-            Quirk targetQuirk = quirkManager.getQuirk(target);
-            targetQuirk
+        if (quirkManager.hasQuirk(target.getUniqueId())) {
+            Quirk targetQuirk = quirkManager.getQuirk(target.getUniqueId());
+            player.sendMessage(Component.text("Player has Quirk: " + targetQuirk.name()));
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.5f);
         } else {
             player.sendMessage("§cPlayer dont have any Quirk !");

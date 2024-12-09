@@ -1,9 +1,11 @@
 package com.kzics.quirksmha.abilities;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-public interface QuirkAbility {
-    void activate(Player player); // Activer l'ability
-    void deactivate(Player player); // Désactiver l'ability
-    void adjustAttributes(int quirkLevel); // Ajuster les attributs selon le niveau du Quirk
+public abstract class QuirkAbility {
+    abstract void activate(Player player);
+    abstract void deactivate(Player player);
+    abstract void adjustAttributes(int quirkLevel);
+    public void onInteract(PlayerInteractEntityEvent event) { }
 }

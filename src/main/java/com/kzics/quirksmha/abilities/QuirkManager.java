@@ -13,26 +13,13 @@ public class QuirkManager {
         playerQuirks.put(player.getUniqueId(), quirk);
     }
 
-    public Quirk getQuirk(Player player) {
-        return playerQuirks.get(player.getUniqueId());
+    public Quirk getQuirk(UUID player) {
+        return playerQuirks.get(player);
     }
 
-    public void activateQuirk(Player player) {
-        Quirk quirk = playerQuirks.get(player.getUniqueId());
-        if (quirk instanceof QuirkAbility) {
-            ((QuirkAbility) quirk).activate(player);
-        }
-    }
 
-    public void deactivateQuirk(Player player) {
-        Quirk quirk = playerQuirks.get(player.getUniqueId());
-        if (quirk instanceof QuirkAbility) {
-            ((QuirkAbility) quirk).deactivate(player);
-        }
-    }
-
-    public boolean hasQuirk(Player player) {
-        return playerQuirks.containsKey(player.getUniqueId());
+    public boolean hasQuirk(UUID player) {
+        return playerQuirks.containsKey(player);
     }
 }
 

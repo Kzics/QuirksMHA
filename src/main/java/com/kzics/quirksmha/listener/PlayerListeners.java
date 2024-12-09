@@ -1,12 +1,17 @@
 package com.kzics.quirksmha.listener;
 
+import com.kzics.quirksmha.abilities.Quirk;
+import com.kzics.quirksmha.abilities.QuirkAbility;
+import com.kzics.quirksmha.abilities.SixEyesAbility;
 import com.kzics.quirksmha.manager.ManagerHandler;
+import com.kzics.quirksmha.quirks.BulletLaserQuirk;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -14,12 +19,17 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 public class PlayerListeners implements Listener {
 
     private final ManagerHandler managerHandler;
+
     public PlayerListeners(ManagerHandler managerHandler) {
         this.managerHandler = managerHandler;
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onInteract(PlayerInteractEntityEvent event) {
+       // Quirk quirk = managerHandler.quirkManager().getQuirk(event.getPlayer());
+        //quirk.getAbilities().forEach(ability -> ability.onInteract(event));
+        QuirkAbility quirkAbility = new SixEyesAbility(managerHandler.quirkManager());
+        quirkAbility.onInteract(event);
     }
 
 
@@ -51,5 +61,10 @@ public class PlayerListeners implements Listener {
             managerHandler.cacheManager().addFajin(event.getPlayer().getUniqueId(), 1);
             generateParticles(event.getPlayer(), false);
         }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        managerHandler.quirkManager().addQuirk(event.getPlayer(), new BulletLaserQuirk());
     }
 }

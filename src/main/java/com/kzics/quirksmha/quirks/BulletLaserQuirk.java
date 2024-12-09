@@ -4,6 +4,10 @@ import com.kzics.quirksmha.abilities.BulletLaserAbility;
 import com.kzics.quirksmha.abilities.Quirk;
 
 public class BulletLaserQuirk extends Quirk {
+    public BulletLaserQuirk() {
+        super("Bullet Laser");
+    }
+
     @Override
     protected void initializeAttributes() {
         
