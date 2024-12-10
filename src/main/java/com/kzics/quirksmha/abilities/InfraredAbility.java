@@ -13,7 +13,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.HashSet;
 import java.util.Set;
 
-public class InfraredAbility implements QuirkAbility {
+public class InfraredAbility extends QuirkAbility {
 
     private double baseRange = 10.0; // Rayon de base pour détecter les entités
     private boolean isActive = false;
