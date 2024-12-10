@@ -47,6 +47,7 @@ public class WeakSpotAbility extends QuirkAbility {
         this.markCooldown = Math.max(20 * 1000L, 40 * 1000L - (quirkLevel - 1) * 1000L); // Réduction du cooldown avec le niveau
     }
 
+    @Override
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
 
@@ -115,6 +116,7 @@ public class WeakSpotAbility extends QuirkAbility {
         markCooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     }
 
+    @Override
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;
         if (!(event.getEntity() instanceof LivingEntity target)) return;
