@@ -8,13 +8,14 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class DangerSenseAbility implements QuirkAbility {
+public class DangerSenseAbility extends QuirkAbility {
     private double baseRange = 20.0;
     private BossBar dangerBar;
     private boolean isTracking = false;
@@ -71,7 +72,15 @@ public class DangerSenseAbility implements QuirkAbility {
             position = resolveConflict(position, usedPositions);
 
             if (position >= 0 && position < bossBarSegments) {
-                barContent.setCharAt(position, 'X');
+                // Déterminer le type d'entité et mettre la lettre correspondante
+                char symbol = 'N'; // Par défaut, "N" pour non hostile
+                if (entity instanceof Player) {
+                    symbol = 'P'; // "P" pour un joueur
+                } else if (entity instanceof Monster) {
+                    symbol = 'H'; // "H" pour un monstre hostile
+                }
+
+                barContent.setCharAt(position, symbol);
                 usedPositions.add(position);
             }
         }
@@ -145,5 +154,10 @@ public class DangerSenseAbility implements QuirkAbility {
     @Override
     public void adjustAttributes(int quirkLevel) {
         baseRange = 20.0 + (quirkLevel - 1) * 2.0;
+    }
+
+    @Override
+    public String name() {
+        return "Danger Sense";
     }
 }

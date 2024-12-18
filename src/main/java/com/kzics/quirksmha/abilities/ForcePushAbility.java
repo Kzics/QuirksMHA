@@ -28,25 +28,23 @@ public class ForcePushAbility extends QuirkAbility {
     private long cooldown;
 
     public ForcePushAbility() {
-        this.maxPushRange = 10.0; // Par défaut
-        this.chargeForce = 1.0; // Par défaut
-        this.cooldown = 15 * 1000L; // Cooldown en millisecondes
+        this.maxPushRange = 10.0;
+        this.chargeForce = 1.0;
+        this.cooldown = 15 * 1000L;
     }
 
     @Override
     public void activate(Player player) {
-        // Activation générale (par ex. via un clic gauche ou droit)
     }
 
     @Override
     public void deactivate(Player player) {
-        // Rien à désactiver
     }
 
     @Override
     public void adjustAttributes(int quirkLevel) {
-        this.maxPushRange = 10.0 + (quirkLevel - 1); // Augmente la portée avec le niveau
-        this.cooldown = Math.max(5 * 1000L, 15 * 1000L - (quirkLevel - 1) * 500L); // Réduit le cooldown
+        this.maxPushRange = 10.0 + (quirkLevel - 1);
+        this.cooldown = Math.max(5 * 1000L, 15 * 1000L - (quirkLevel - 1) * 500L);
     }
 
 
@@ -69,7 +67,7 @@ public class ForcePushAbility extends QuirkAbility {
         if (isCharging) {
             executeForcePush(player, chargeForce);
         } else {
-            executeForcePush(player, 1.0); // Push normal
+            executeForcePush(player, 10);
         }
 
         startCooldown(player);
@@ -105,11 +103,11 @@ public class ForcePushAbility extends QuirkAbility {
         for (Entity entity : player.getNearbyEntities(maxPushRange, maxPushRange, maxPushRange)) {
             if (entity instanceof LivingEntity livingEntity && !livingEntity.equals(player)) {
                 Vector pushDirection = entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
+                pushDirection.setY(pushDirection.getY() + 0.5);
                 livingEntity.setVelocity(pushDirection.multiply(force));
             }
         }
 
-        // Effets visuels
         player.getWorld().spawnParticle(Particle.EXPLOSION, player.getLocation().add(0, 1, 0), 1);
     }
 
@@ -123,29 +121,30 @@ public class ForcePushAbility extends QuirkAbility {
             return;
         }
 
-        player.sendMessage("§aVous maintenez " + target.getName() + " !");
-        target.setGravity(false);
-        target.setVelocity(new Vector(0, 0, 0));
+        player.sendMessage("\u00a7aVous maintenez " + target.getName() + " !");
 
         new BukkitRunnable() {
             int ticks = 0;
 
             @Override
             public void run() {
-                if (ticks > 100 || !player.isSneaking()) { // 5 secondes ou fin du maintien
-                    target.setGravity(true);
-                    player.sendMessage("§cForce Hold terminé !");
+                if (ticks > 200) {
+                    player.sendMessage("\u00a7cForce Hold terminé !");
                     cancel();
+                    return;
                 }
 
-                // Garder l'entité devant le joueur
-                Location holdLocation = player.getLocation().add(player.getLocation().getDirection().multiply(2));
-                holdLocation.setY(target.getLocation().getY());
-                target.teleport(holdLocation);
+                Location targetLocation = player.getEyeLocation().add(player.getLocation().getDirection().multiply(4));
 
-                ticks += 1;
+                Vector toTarget = targetLocation.toVector().subtract(target.getLocation().toVector()).normalize();
+                target.setVelocity(toTarget.multiply(0.5));
+
+                player.getWorld().spawnParticle(Particle.DUST, target.getLocation().add(0, 1, 0), 5, 0.2, 0.2, 0.2,
+                        new Particle.DustOptions(Color.PURPLE, 1.0f));
+
+                ticks++;
             }
-        }.runTaskTimer(Main.getInstance(), 0, 1); // Mise à jour chaque tick
+        }.runTaskTimer(Main.getInstance(), 0, 1);
     }
 
     private void createForceField(Player player) {
@@ -159,7 +158,6 @@ public class ForcePushAbility extends QuirkAbility {
             }
         }
 
-        // Effets visuels
         player.getWorld().spawnParticle(Particle.SWEEP_ATTACK, player.getLocation(), 20, 2.0, 2.0, 2.0);
     }
 
@@ -175,10 +173,10 @@ public class ForcePushAbility extends QuirkAbility {
                     return;
                 }
 
-                chargeForce = Math.min(3.0, chargeForce + 0.1); // Augmenter la force jusqu'à un maximum
+                chargeForce = Math.min(3.0, chargeForce + 0.1);
                 generateChargeParticles(player);
             }
-        }.runTaskTimer(Main.getInstance(), 0, 10); // Mise à jour toutes les 0.5 secondes
+        }.runTaskTimer(Main.getInstance(), 0, 10);
     }
 
     private void stopCharge(Player player) {
@@ -204,17 +202,20 @@ public class ForcePushAbility extends QuirkAbility {
     }
 
     private LivingEntity getLookedAtEntity(Player player) {
-        Vector playerDirection = player.getLocation().getDirection();
         Location playerLocation = player.getEyeLocation();
 
         for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
             if (entity instanceof LivingEntity livingEntity && !livingEntity.equals(player)) {
                 Vector toEntity = livingEntity.getLocation().toVector().subtract(playerLocation.toVector()).normalize();
-                if (playerDirection.dot(toEntity) > 0.99) { // Angle très proche
-                    return livingEntity;
-                }
+
+                return livingEntity;
             }
         }
         return null;
+    }
+
+    @Override
+    public String name() {
+        return "Force Push";
     }
 }

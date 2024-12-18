@@ -3,7 +3,7 @@ package com.kzics.quirksmha.abilities;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
-public class BloodManipulationAbility implements QuirkAbility {
+public class BloodManipulationAbility extends QuirkAbility {
     private double damage = 1.0;
     private int cooldown = 20;
     private double range = 15.0;
@@ -43,5 +43,10 @@ public class BloodManipulationAbility implements QuirkAbility {
 
     private int quirkLevel(Player player) {
         return 1; // Récupérer le niveau du joueur (logique à ajouter si besoin)
+    }
+
+    @Override
+    public String name() {
+        return "Blood Manipulation";
     }
 }

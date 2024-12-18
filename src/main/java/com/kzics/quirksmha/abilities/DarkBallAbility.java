@@ -9,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class DarkBallAbility implements QuirkAbility {
+public class DarkBallAbility extends QuirkAbility {
 
     private double explosionRadius = 3.0; // Rayon de l'explosion
     private int expandTime = 80; // Temps en ticks pour l'expansion (4 secondes)
@@ -77,5 +77,10 @@ public class DarkBallAbility implements QuirkAbility {
     public void adjustAttributes(int quirkLevel) {
         this.explosionRadius = 3.0 + (quirkLevel - 1) * 0.5; // Augmente le ray
         this.expandTime = 80 - (quirkLevel - 1) * 5; // Diminue le temps d'expansion
+    }
+
+    @Override
+    public String name() {
+        return "Dark Ball";
     }
 }

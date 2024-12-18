@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class BarrierAbility implements QuirkAbility {
+public class BarrierAbility extends QuirkAbility {
 
     private boolean barrierActive = false;
     private double baseRadius = 2.5; // Rayon initial de la barrière
@@ -94,5 +94,10 @@ public class BarrierAbility implements QuirkAbility {
                 }
             }
         }
+    }
+
+    @Override
+    public String name() {
+        return "Barrier";
     }
 }

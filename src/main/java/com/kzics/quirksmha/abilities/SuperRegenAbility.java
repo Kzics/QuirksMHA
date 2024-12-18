@@ -50,4 +50,9 @@ public class SuperRegenAbility extends QuirkAbility {
             player.removePotionEffect(PotionEffectType.REGENERATION);
         }
     }
+
+    @Override
+    public String name() {
+        return "Super Regen";
+    }
 }

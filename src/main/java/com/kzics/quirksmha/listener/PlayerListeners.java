@@ -1,10 +1,12 @@
 package com.kzics.quirksmha.listener;
 
+import com.kzics.quirksmha.abilities.BlackWhipAbility;
 import com.kzics.quirksmha.abilities.Quirk;
 import com.kzics.quirksmha.abilities.QuirkAbility;
 import com.kzics.quirksmha.abilities.SixEyesAbility;
 import com.kzics.quirksmha.manager.ManagerHandler;
 import com.kzics.quirksmha.quirks.BulletLaserQuirk;
+import com.kzics.quirksmha.quirks.ForcePushQuirk;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -32,13 +34,11 @@ public class PlayerListeners implements Listener {
         quirkAbility.onInteract(event);
     }
 
-
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
-        Player player = event.getPlayer();
-        if(managerHandler.cacheManager().isFajin(player.getUniqueId())) {
-            managerHandler.cacheManager().addFajin(player.getUniqueId(), 1);
-            generateParticles(player, true);
+        QuirkAbility activeAbility = managerHandler.quirkManager().getActiveAbility(event.getPlayer().getUniqueId());
+        if(activeAbility != null) {
+            activeAbility.onSneak(event);
         }
     }
 
@@ -57,6 +57,11 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onPunch(PlayerInteractEvent event) {
+        QuirkAbility activeAbility = managerHandler.quirkManager().getActiveAbility(event.getPlayer().getUniqueId());
+        if(activeAbility != null) {
+            activeAbility.activate(event.getPlayer());
+        }
+
         if(managerHandler.cacheManager().isFajin(event.getPlayer().getUniqueId())) {
             managerHandler.cacheManager().addFajin(event.getPlayer().getUniqueId(), 1);
             generateParticles(event.getPlayer(), false);
@@ -65,6 +70,9 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        managerHandler.quirkManager().addQuirk(event.getPlayer(), new BulletLaserQuirk());
+        //managerHandler.quirkManager().addQuirk(event.getPlayer(), new BulletLaserQuirk());
+        managerHandler.quirkManager().addQuirk(event.getPlayer(), new ForcePushQuirk());
+        managerHandler.playerDataManager().initializePlayer(event.getPlayer().getUniqueId(), managerHandler.quirkManager().getQuirk(event.getPlayer().getUniqueId()));
+        managerHandler.quirkManager().setActiveAbility(event.getPlayer().getUniqueId(), new BlackWhipAbility());
     }
 }

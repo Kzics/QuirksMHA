@@ -144,4 +144,9 @@ public class SixEyesAbility extends QuirkAbility {
             player.sendMessage("§cPlayer dont have any Quirk !");
         }
     }
+
+    @Override
+    public String name() {
+        return "Six Eyes";
+    }
 }

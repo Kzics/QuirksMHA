@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class FajinAbility implements QuirkAbility {
+public class FajinAbility extends QuirkAbility {
 
     private final CacheManager cacheManager;
     private double maxChargeTime; // Durée maximale de charge
@@ -126,5 +126,10 @@ public class FajinAbility implements QuirkAbility {
 
         player.getWorld().spawnParticle(Particle.DUST, particleLocation, 10, 0.3, 0.2, 0.3,
                 new Particle.DustOptions(Color.RED, 1.0f));
+    }
+
+    @Override
+    public String name() {
+        return "Fajin";
     }
 }

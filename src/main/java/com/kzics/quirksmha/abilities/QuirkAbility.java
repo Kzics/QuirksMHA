@@ -9,9 +9,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
 public abstract class QuirkAbility {
-    abstract void activate(Player player);
-    abstract void deactivate(Player player);
-    abstract void adjustAttributes(int quirkLevel);
+    public abstract String name();
+    public abstract void activate(Player player);
+    public abstract void deactivate(Player player);
+    public abstract void adjustAttributes(int quirkLevel);
     public void onInteract(PlayerInteractEntityEvent event) { }
     public void onFoodLevelChange(FoodLevelChangeEvent event) { }
     public void onDamage(EntityDamageByEntityEvent event) { }

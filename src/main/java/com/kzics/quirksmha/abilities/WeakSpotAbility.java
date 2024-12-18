@@ -31,17 +31,17 @@ public class WeakSpotAbility extends QuirkAbility {
     }
 
     @Override
-    void activate(Player player) {
+    public void activate(Player player) {
         // Activation par sneaking
     }
 
     @Override
-    void deactivate(Player player) {
+    public void deactivate(Player player) {
         // Rien à désactiver pour cette capacité
     }
 
     @Override
-    void adjustAttributes(int quirkLevel) {
+    public void adjustAttributes(int quirkLevel) {
         this.markDuration = 10.0 + (quirkLevel - 1) * 0.3; // Durée augmente avec le niveau
         this.critDamageMultiplier = 1.75 + (quirkLevel - 1) * 0.03; // Multiplicateur augmente avec le niveau
         this.markCooldown = Math.max(20 * 1000L, 40 * 1000L - (quirkLevel - 1) * 1000L); // Réduction du cooldown avec le niveau
@@ -155,4 +155,8 @@ public class WeakSpotAbility extends QuirkAbility {
         return null;
     }
 
+    @Override
+    public String name() {
+        return "Weak Spot";
+    }
 }

@@ -8,7 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class BulletLaserAbility implements QuirkAbility {
+public class BulletLaserAbility extends QuirkAbility {
 
     private double cooldown = 10.0;
 
@@ -50,5 +50,10 @@ public class BulletLaserAbility implements QuirkAbility {
             player.getWorld().spawnParticle(Particle.DUST, currentPoint, 1,
                     new Particle.DustOptions(Color.PURPLE, 0.8f));
         }
+    }
+
+    @Override
+    public String name() {
+        return "Bullet Laser";
     }
 }

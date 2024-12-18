@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class AirCannonAbility implements QuirkAbility {
+public class AirCannonAbility extends QuirkAbility {
 
     private double damage;
     private double cooldown;
@@ -92,19 +92,21 @@ public class AirCannonAbility implements QuirkAbility {
 
         for (Entity entity : loc.getWorld().getNearbyEntities(loc, impactRadius, impactRadius, impactRadius)) {
             if (entity instanceof LivingEntity target && !target.equals(caster)) {
-                // Appliquer les dégâts
                 target.damage(damage);
 
-                // Appliquer le knockback
                 Vector knockback = target.getLocation().toVector()
                         .subtract(caster.getLocation().toVector())
                         .normalize()
                         .multiply(1.5);
                 target.setVelocity(knockback);
 
-                // Jouer un son d'impact
                 loc.getWorld().playSound(loc, Sound.ENTITY_BLAZE_HURT, 1.0f, 1.0f);
             }
         }
+    }
+
+    @Override
+    public String name() {
+        return "Air Cannon";
     }
 }

@@ -1,8 +1,13 @@
 main: com.kzics.quirksmha.Main
 version: 1.0
 name: QuirksMHA
+api-version: 1.13
 commands:
   stats:
     description: Shows your stats
     usage: /stats
     aliases: [s]
+  quirks:
+    description: Shows your quirks
+    usage: /quirks
+    aliases: [q]

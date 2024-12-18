@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-public class BlackWhipAbility implements QuirkAbility {
+public class BlackWhipAbility extends QuirkAbility {
 
     private double rangeBlock;
     private double rangeGrab;
@@ -124,5 +124,10 @@ public class BlackWhipAbility implements QuirkAbility {
                 speed = Math.max(0, speed - drag);
             }
         }.runTaskTimer(Main.getInstance(), 0, 2); // Tick toutes les 2 ticks
+    }
+
+    @Override
+    public String name() {
+        return "Black Whip";
     }
 }

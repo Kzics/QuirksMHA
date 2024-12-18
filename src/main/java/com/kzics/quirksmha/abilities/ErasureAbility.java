@@ -13,7 +13,7 @@ import org.bukkit.util.RayTraceResult;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ErasureAbility implements QuirkAbility {
+public class ErasureAbility extends QuirkAbility {
 
     private int maxDuration; // Durée maximale d'efficacité
     private int cooldown; // Cooldown en secondes
@@ -120,5 +120,10 @@ public class ErasureAbility implements QuirkAbility {
         }
 
         player.getWorld().playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.5f);
+    }
+
+    @Override
+    public String name() {
+        return "Erasure";
     }
 }

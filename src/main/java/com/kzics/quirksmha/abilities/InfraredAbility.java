@@ -98,4 +98,9 @@ public class InfraredAbility extends QuirkAbility {
         }
         glowingEntities.clear();
     }
+
+    @Override
+    public String name() {
+        return "Infrared";
+    }
 }

@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class BurstAbility implements QuirkAbility {
+public class BurstAbility extends QuirkAbility {
 
     private final JavaPlugin plugin;
 
@@ -37,5 +37,10 @@ public class BurstAbility implements QuirkAbility {
             location.getWorld().createExplosion(location, 10F, true, true);
             player.setHealth(0);
         }, 100L);
+    }
+
+    @Override
+    public String name() {
+        return "Burst";
     }
 }

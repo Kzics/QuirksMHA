@@ -11,11 +11,10 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class ImpureBeamAbility implements QuirkAbility {
+public class ImpureBeamAbility extends QuirkAbility {
 
     private double baseChargeTime = 5.0; // Temps de chargement en secondes
     private double fullDamage = 14.0; // Dégâts du rayon complètement chargé (7 cœurs)
-    private double reducedDamage = 6.0; // Dégâts anticipés (3 cœurs)
     private boolean isCharging = false;
     private boolean canPreemptiveFire = false;
 
@@ -62,6 +61,8 @@ public class ImpureBeamAbility implements QuirkAbility {
             player.sendMessage("Vous ne pouvez pas tirer maintenant !");
             return;
         }
+        // Dégâts anticipés (3 cœurs)
+        double reducedDamage = 6.0;
         fireBeam(player, reducedDamage);
         isCharging = false;
     }
@@ -103,7 +104,7 @@ public class ImpureBeamAbility implements QuirkAbility {
         Location current = start.clone();
         for (double i = 0; i < distance; i += 0.1) {
             player.getWorld().spawnParticle(Particle.DUST, current, 1,
-                    new Particle.DustOptions(Color.YELLOW, 1.2f)); // Particules jaunes lumineuses
+                    new Particle.DustOptions(Color.YELLOW, 1.2f));
             current.add(step);
         }
     }
@@ -120,5 +121,10 @@ public class ImpureBeamAbility implements QuirkAbility {
     @Override
     public void deactivate(Player player) {
         // Non utilisé ici
+    }
+
+    @Override
+    public String name() {
+        return "Impure Beam";
     }
 }

@@ -14,13 +14,19 @@ public class PlayerData {
     private int tokensUsed;
     private final int maxTokens = 15;
     private Quirk quirk;
+    private int level;
 
-    public PlayerData(Quirk quirk) {
+    public PlayerData(Quirk quirk, int level) {
         this.quirk = quirk;
         for (Stat stat : Stat.values()) {
             stats.put(stat, 0);
         }
         this.tokensUsed = 0;
+        this.level = 1;
+    }
+
+    public int level() {
+        return level;
     }
 
     public boolean levelUpStat(Stat stat) {
